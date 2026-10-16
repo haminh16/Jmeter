@@ -1,5 +1,60 @@
-Apache JMeter Performance Testing ProjectRepository này chứa kịch bản kiểm thử hiệu năng (Performance / Load Testing) cơ bản được tạo bằng Apache JMeter (v5.6.3). Kịch bản giúp giả lập các truy vấn người dùng (HTTP Request) gửi tới trang web đích để đo lường độ trễ (Response Time), băng thông (Throughput) và tỷ lệ lỗi (Error Rate).📌 Nội dung kịch bản (Lab8_Test.jmx)Kịch bản kiểm thử bao gồm các thành phần chính sau:Thread Group: Cấu hình số lượng người dùng ảo và thời gian kích hoạt.HTTP Request: Cấu hình địa chỉ URL và thông số kết nối tới máy chủ.View Results Tree: Theo dõi trạng thái và thông tin chi tiết từng yêu cầu gửi đi.Summary Report: Tổng hợp các chỉ số hiệu năng chung của toàn bộ đợt kiểm thử.🛠 Yêu cầu hệ thốngJava Runtime Environment (JRE): Version 8 trở lên.Apache JMeter: Version 5.6.3 (hoặc phiên bản tương đương).⚙️ Cấu hình Chi tiết (Test Plan)1. Thread GroupNumber of Threads (users): 5 (Giả lập 5 người dùng đồng thời)Ramp-up Period (seconds): 5 (Mỗi giây khởi tạo 1 user)Loop Count: 2 (Mỗi user thực hiện lượt gửi 2 lần $\rightarrow$ Tổng số samples = $5 \times 2 = 10$)Action to be taken after a Sampler error: Continue2. HTTP RequestProtocol [http]: httpsServer Name or IP: example.comPort Number: (Mặc định)Method: GETPath: /📊 Hướng dẫn Đọc Kết quả Kiểm thử1. View Results Tree (Xem kết quả chi tiết)Hiển thị danh sách từng request được gửi đi real-time:Icon màu xanh cho biết các request đều trả về mã thành công (200 OK).Thông số mẫu:Load time: ~312 msLatency: 298 msResponse code: 200 (OK)2. Summary Report (Báo cáo tổng hợp)Dưới đây là bảng tổng hợp kết quả của đợt test (10 samples):Chỉ sốGiá trịGiải thích# Samples10Tổng số lượng request đã gửiAverage248 msThời gian phản hồi trung bìnhMin132 msThời gian phản hồi nhanh nhấtMax487 msThời gian phản hồi chậm nhấtStd. Dev.102.34Độ lệch chuẩn của thời gian phản hồiError %0.00%Tỷ lệ lỗi (tất cả request đều thành công)Throughput3.2/secSố lượng request xử lý được trên mỗi giâyReceived KB/sec47.6Băng thông nhận về mỗi giâySent KB/sec14.8Băng thông gửi đi mỗi giây🚀 Hướng dẫn Sử dụngClone repository về máy local:git clone https://github.com/quocbinh93/JMeter.git
-cd JMeter
-Mở tập tin kịch bản bằng Apache JMeter:Mở phần mềm Apache JMeter.Chọn File $\rightarrow$ Open (hoặc nhấn Ctrl + O).Trỏ đến tập tin Lab8_Test.jmx.Thực thi kiểm thử:Nhấn nút Start (biểu tượng mũi tên xanh ▶) trên thanh công cụ để bắt đầu test.Chọn listener View Results Tree hoặc Summary Report để quan sát kết quả trực tiếp.📁 Cấu trúc Thư mục.
-├── Lab8_Test.jmx         # File kịch bản kiểm thử JMeter
-└── README.md             # Tài liệu hướng dẫn dự án
+# BÁO CÁO KẾT QUẢ KIỂM THỬ HIỆU NĂNG (PERFORMANCE TEST REPORT)
+
+**Công cụ kiểm thử:** Apache JMeter (Phiên bản 5.6.3)
+**Tên kịch bản:** `Lab8_Test.jmx`
+**Mục tiêu kiểm thử:** Đánh giá hiệu năng phản hồi cơ bản của trang đích `example.com` với một lượng tải nhỏ.
+
+---
+
+## 1. MÔ TẢ KỊCH BẢN KIỂM THỬ (TEST CONFIGURATION)
+
+Kịch bản được thiết lập để giả lập nhiều người dùng cùng truy cập vào một trang web. Các thông số cấu hình cụ thể trong phần **Thread Group** và **HTTP Request** như sau:
+
+* **Giao thức (Protocol):** `https`
+* **Máy chủ đích (Server Name):** `example.com`
+* **Phương thức (Method):** `GET`
+* **Đường dẫn (Path):** `/`
+* **Số lượng người dùng ảo (Number of Threads/Users):** `5`
+* **Thời gian tăng tải (Ramp-up Period):** `5` giây (trung bình 1 giây khởi tạo 1 user)
+* **Số vòng lặp (Loop Count):** `2` vòng/user
+* **Tổng số yêu cầu (Total Requests/Samples):** 5 users × 2 loops = **10 requests**
+
+---
+
+## 2. CHI TIẾT KẾT QUẢ (TEST RESULTS)
+
+Quá trình kiểm thử đã được thực thi và thu thập dữ liệu qua các Listener của JMeter:
+![Báo cáo JMeter](baitap.png)
+
+### 2.1. Trạng thái các yêu cầu (View Results Tree)
+Toàn bộ 10 yêu cầu (HTTP Request) được gửi đi đều thành công.
+* **Mã phản hồi (Response code):** `200`
+* **Thông điệp (Response message):** `OK`
+* Hệ thống nhận phản hồi hoàn chỉnh mà không gặp bất kỳ lỗi kết nối nào.
+
+### 2.2. Số liệu tổng hợp (Summary Report)
+Dưới đây là bảng thống kê các chỉ số đo lường hiệu năng của hệ thống trong suốt phiên kiểm thử:
+
+| Chỉ số hiệu năng | Kết quả đo lường | Đánh giá / Ý nghĩa |
+| :--- | :--- | :--- |
+| **Total Samples** | 10 | Tổng số lượt truy vấn đã thực hiện. |
+| **Average (Trung bình)** | **248 ms** | Thời gian phản hồi trung bình của hệ thống là rất nhanh (chưa tới 0.3 giây). |
+| **Min (Nhỏ nhất)** | 132 ms | Thời gian phản hồi nhanh nhất ghi nhận được. |
+| **Max (Lớn nhất)** | 487 ms | Thời gian phản hồi chậm nhất (vẫn ở mức tốt, dưới 0.5 giây). |
+| **Std. Dev. (Độ lệch chuẩn)**| 102.34 | Độ phân tán của thời gian phản hồi ở mức trung bình, độ ổn định khá cao. |
+| **Error % (Tỷ lệ lỗi)** | **0.00%** | **Tuyệt đối không có lỗi** trong quá trình xử lý yêu cầu. |
+| **Throughput (Thông lượng)**| 3.2 / sec | Hệ thống xử lý được trung bình 3.2 yêu cầu mỗi giây. |
+| **Received (Nhận về)** | 47.6 KB/sec | Tốc độ tải dữ liệu từ server về máy client. |
+| **Sent (Gửi đi)** | 14.8 KB/sec | Tốc độ gửi dữ liệu từ client lên server. |
+
+---
+
+## 3. KẾT LUẬN & ĐÁNH GIÁ
+
+Dựa trên các số liệu từ Summary Report:
+1. **Độ ổn định:** Tỷ lệ lỗi là 0% cho thấy server `example.com` hoạt động hoàn toàn ổn định và xử lý trọn vẹn 100% lượng tải giả lập.
+2. **Tốc độ phản hồi (Response Time):** Thời gian phản hồi trung bình (248ms) và thời gian lớn nhất (487ms) đều rất tốt, đảm bảo trải nghiệm người dùng mượt mà mà không có hiện tượng nghẽn cổ chai (bottleneck) ở mức tải 5 users.
+3. **Đánh giá chung:** Hệ thống đáp ứng xuất sắc kịch bản tải hiện tại. Tuy nhiên, vì đây là một mức tải rất nhỏ (5 concurrent users), cần thực hiện thêm các kịch bản có số lượng Threads lớn hơn (ví dụ: 100, 500, hoặc 1000 users) để tìm ra giới hạn chịu tải thực sự của server.
+```eof
+
+Đây là một mẫu báo cáo kiểm thử (Test Report) hoàn chỉnh dựa trên chính xác những con số trong bức ảnh bạn gửi. Bạn có thể lưu file này dưới dạng `.doc`, `.pdf` hoặc copy nội dung ra Word để nộp bài nhé! Cần chỉnh sửa thêm phần nào cứ báo tôi.
